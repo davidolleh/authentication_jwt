@@ -16,7 +16,6 @@ class User(
     imgUrl: String?,
 ): PrimaryKeyEntity() {
 
-    @Column(nullable = true, unique = true)
     @Embedded
     var email: Email? = email
         protected set

@@ -1,9 +1,11 @@
 package com.example.authentication.authentication_jwt.domain.user
 
+import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 
 @Embeddable
 data class Email private constructor(
+    @Column(name = "email", nullable = true, unique = true)
     var email: String
 ) {
     companion object {
