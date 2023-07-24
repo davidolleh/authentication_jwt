@@ -5,7 +5,6 @@ import jakarta.persistence.Embeddable
 
 @Embeddable
 data class Email private constructor(
-    @Column(name = "email", nullable = true, unique = true)
     var email: String
 ) {
     companion object {
