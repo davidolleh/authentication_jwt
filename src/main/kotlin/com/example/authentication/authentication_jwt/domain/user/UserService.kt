@@ -14,7 +14,19 @@ class UserService @Autowired constructor(
     private val passwordEncoder: BCryptPasswordEncoder = BCryptPasswordEncoder()
 
     @Transactional
-    fun singUp() : Unit {
+    fun singUp(email: String?, phoneNumber: String?, pw: String) : Unit {
+        val encryptedPassword: String = passwordEncoder.encode(pw)
+    }
+
+    private fun checkIdIsExist(email: String?, phoneNumber: String?): Boolean {
+        var user: User? = null
+        if (email != null) {
+            user = userRepository.findByEmail(Email.validEmail(email))
+        } else {
+            user = userRepository.findByPhoneNumber(PhoneNumber.validPhoneNumber(phoneNumber!!))
+        }
+
+        return user != null
     }
 
 

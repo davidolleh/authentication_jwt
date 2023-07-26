@@ -16,7 +16,7 @@ class User(
     password: String,
     name: String,
     imgUrl: String?,
-): PrimaryKeyEntity() {
+) : PrimaryKeyEntity() {
 
     @Embedded
     @AttributeOverride(
