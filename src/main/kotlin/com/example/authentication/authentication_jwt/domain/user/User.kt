@@ -13,6 +13,7 @@ import java.time.LocalDateTime
 class User(
     email: Email?,
     phoneNumber: String?,
+    password: String,
     name: String,
     imgUrl: String?,
 ): PrimaryKeyEntity() {
@@ -29,6 +30,9 @@ class User(
         name="phoneNumber", column = Column(name="USER_PHONE_NUMBER", nullable = true, unique = true)
     )
     var phoneNumber: String? = phoneNumber
+        protected set
+
+    var password: String = password
         protected set
 
     @Column(name = "USER_NAME", nullable = false, unique = true)
