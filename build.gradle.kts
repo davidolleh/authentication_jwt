@@ -42,7 +42,10 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+	//uuid 생성 package
 	implementation("com.github.f4b6a3:ulid-creator:5.2.0")
+	// mail api package
+	implementation("com.sun.mail:javax.mail:1.6.2")
 }
 
 tasks.withType<KotlinCompile> {

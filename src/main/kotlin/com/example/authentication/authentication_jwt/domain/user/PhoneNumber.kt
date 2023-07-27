@@ -1,12 +1,13 @@
 package com.example.authentication.authentication_jwt.domain.user
 
+import com.example.authentication.authentication_jwt.domain.core.Contact
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 
 @Embeddable
 data class PhoneNumber private constructor(
     var phoneNumber: String
-) {
+): Contact(destination = phoneNumber) {
     companion object {
         private const val phoneNumberPattern: String = "^[1-9]\\d{1,14}$"
 
