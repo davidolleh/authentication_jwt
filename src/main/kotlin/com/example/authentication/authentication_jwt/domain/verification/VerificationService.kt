@@ -1,7 +1,7 @@
 package com.example.authentication.authentication_jwt.domain.verification
 
 import com.example.authentication.authentication_jwt.data.VerificationRepository
-import com.example.authentication.authentication_jwt.domain.core.Contact
+import com.example.authentication.authentication_jwt.domain.user.Contact
 import com.example.authentication.authentication_jwt.domain.user.Email
 import com.example.authentication.authentication_jwt.domain.user.PhoneNumber
 import org.springframework.beans.factory.annotation.Autowired
@@ -53,9 +53,10 @@ class VerificationService @Autowired constructor(
         try {
             val msg =  MimeMessage(session)
             msg.setFrom(InternetAddress("asherolleh@gmail.com","황승준 회원가입 인증번호 입니다"))
-            msg.addRecipient(Message.RecipientType.TO, InternetAddress(verification.destination!!.information))
+//            msg.addRecipient(Message.RecipientType.TO, InternetAddress((verification.destination as Contact.Email).email))
+            msg.addRecipient(Message.RecipientType.TO, InternetAddress(verification.destination.information))
             msg.setSubject("Hello world!")
-            msg.setText(verification.verificationCode!!.verificationNumber)
+            msg.setText(verification.verificationCode.verificationNumber)
 
             Transport.send(msg)
 

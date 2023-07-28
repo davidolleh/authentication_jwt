@@ -1,13 +1,11 @@
 package com.example.authentication.authentication_jwt.domain.user
 
-import com.example.authentication.authentication_jwt.domain.core.Contact
-import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 
 @Embeddable
 data class Email private constructor(
     var email: String
-): Contact(destination = email) {
+): Contact(information = email) {
     companion object {
         private const val localPattern = "([a-z0-9!#\\\$%&'*+/=?^_`{|}~-]+\\.?[a-z0-9!#\\\$%&'*+/=?^_`{|}~-]+)"
 
