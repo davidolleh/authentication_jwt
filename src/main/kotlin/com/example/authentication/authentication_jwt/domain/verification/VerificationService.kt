@@ -27,8 +27,6 @@ class VerificationService @Autowired constructor(
 
         when (verification.destination) {
             is PhoneNumber -> sendVerificationToSms(
-//                phoneNumber = verification.destination as PhoneNumber,
-//                countryCode = "82",
                 verification=verification
             )
             is Email -> sendVerificationToEmail(
@@ -38,8 +36,6 @@ class VerificationService @Autowired constructor(
     }
 
     private fun sendVerificationToSms(
-//        phoneNumber: PhoneNumber,
-//        countryCode: String,
         verification: Verification
     ) {
     }
@@ -53,7 +49,6 @@ class VerificationService @Autowired constructor(
         try {
             val msg =  MimeMessage(session)
             msg.setFrom(InternetAddress("asherolleh@gmail.com","황승준 회원가입 인증번호 입니다"))
-//            msg.addRecipient(Message.RecipientType.TO, InternetAddress((verification.destination as Contact.Email).email))
             msg.addRecipient(Message.RecipientType.TO, InternetAddress(verification.destination.information))
             msg.setSubject("Hello world!")
             msg.setText(verification.verificationCode.verificationNumber)
