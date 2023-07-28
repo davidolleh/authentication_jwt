@@ -1,6 +1,6 @@
 package com.example.authentication.authentication_jwt.domain.core
 
 abstract class Contact(
-    val destination: String
+    val information: String
 ) {
 }
