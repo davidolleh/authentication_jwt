@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 @Table(name = "user")
 class User(
     email: Email?,
-    phoneNumber: String?,
+    phoneNumber: PhoneNumber?,
     password: String,
     name: String,
     imgUrl: String?,
@@ -29,9 +29,10 @@ class User(
     @AttributeOverride(
         name="phoneNumber", column = Column(name="USER_PHONE_NUMBER", nullable = true, unique = true)
     )
-    var phoneNumber: String? = phoneNumber
+    var phoneNumber: PhoneNumber? = phoneNumber
         protected set
 
+    @Column(name = "USER_PW", nullable = false)
     var password: String = password
         protected set
 
