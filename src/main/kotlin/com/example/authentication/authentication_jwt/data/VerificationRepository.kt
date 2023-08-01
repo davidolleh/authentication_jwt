@@ -4,5 +4,5 @@ import com.example.authentication.authentication_jwt.domain.verification.Verific
 import com.example.authentication.authentication_jwt.domain.verification.VerificationCode
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface VerificationRepository: JpaRepository<Verification, VerificationCode> {
-}
+//interface VerificationRepository: JpaRepository<Verification, VerificationCode> {
+//}

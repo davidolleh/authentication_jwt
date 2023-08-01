@@ -2,10 +2,12 @@ package com.example.authentication.authentication_jwt.domain.user
 
 import jakarta.persistence.Embeddable
 
+
 @Embeddable
+@NoArg
 data class Email private constructor(
     var email: String
-): Contact(information = email) {
+): Contact {
     companion object {
         private const val localPattern = "([a-z0-9!#\\\$%&'*+/=?^_`{|}~-]+\\.?[a-z0-9!#\\\$%&'*+/=?^_`{|}~-]+)"
 
@@ -16,4 +18,6 @@ data class Email private constructor(
         fun validEmail(userInput: String): Email =
             if(userInput.length <= 200 && Regex(emailPattern).matches(userInput)) Email(userInput) else throw Exception()
     }
+
+    override fun destination(): String = this.email
 }
