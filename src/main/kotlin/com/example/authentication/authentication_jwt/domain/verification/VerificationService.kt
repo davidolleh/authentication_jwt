@@ -1,6 +1,5 @@
 package com.example.authentication.authentication_jwt.domain.verification
 
-//import com.example.authentication.authentication_jwt.data.VerificationRepository
 import com.example.authentication.authentication_jwt.domain.user.Contact
 import com.example.authentication.authentication_jwt.domain.user.Email
 import com.example.authentication.authentication_jwt.domain.user.PhoneNumber
@@ -18,7 +17,7 @@ import javax.mail.internet.MimeMessage
 
 @Service
 class VerificationService @Autowired constructor(
-//    val verificationRepository: VerificationRepository
+    val verificationRepository: VerificationRepository
 
 ) {
     fun sendVerificationToDestination(contact: Contact) {
@@ -56,11 +55,12 @@ class VerificationService @Autowired constructor(
             Transport.send(msg)
 
         } catch (e: AddressException) {
-
+            println(e.toString())
         } catch (e: MessagingException) {
+            println(e.toString())
 
         } catch (e: UnsupportedEncodingException) {
-
+            println(e.toString())
         }
 
     }
@@ -77,7 +77,7 @@ class VerificationService @Autowired constructor(
     private fun createVerification(verificationCode: VerificationCode, contact: Contact): Verification {
         val verification: Verification = Verification(verificationCode=verificationCode, destination = contact)
 
-//        verificationRepository.save(verification)
+        verificationRepository.save(verification)
 
         return verification
     }
