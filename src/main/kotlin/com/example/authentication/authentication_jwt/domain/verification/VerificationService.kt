@@ -22,6 +22,7 @@ class VerificationService @Autowired constructor(
 ) {
     fun sendVerificationToDestination(contact: Contact) {
         val verificationCode: VerificationCode = this.createVerificationCode()
+
         val verification: Verification = this.createVerification(verificationCode=verificationCode, contact=contact)
 
         when (verification.destination) {
