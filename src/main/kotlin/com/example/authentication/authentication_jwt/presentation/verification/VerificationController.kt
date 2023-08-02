@@ -7,24 +7,27 @@ import com.example.authentication.authentication_jwt.domain.verification.Verific
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 
+@RestController
 class VerificationController @Autowired constructor(
     private val verificationService: VerificationService
 ) {
     @PostMapping("/verification")
     fun sendVerification(
-        @RequestBody requestBody: Map<String, String>
-    ) {
-        var contact: Contact
-
-        var requestKeys: Set<String> = requestBody.keys
-
-        contact = if (requestKeys.contains("phone_number")) {
-            PhoneNumber.validPhoneNumber(requestBody["phone_number"]!!)
+        @RequestBody requestBody: VerificationRequestDto
+    ) : Boolean {
+        var contact: Contact = if (requestBody.phoneNumber != null) {
+            PhoneNumber.validPhoneNumber(requestBody.phoneNumber)
         } else {
-            Email.validEmail(requestBody["email"]!!)
+            Email.validEmail(requestBody.email!!)
         }
 
-        verificationService.sendVerificationToDestination(contact = contact)
+        return try {
+            verificationService.sendVerificationToDestination(contact = contact)
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 }
