@@ -15,5 +15,5 @@ data class PhoneNumber private constructor(
             if (Regex(phoneNumberPattern).matches(userInput)) PhoneNumber(userInput) else throw Exception()
     }
 
-    override fun destination(): String = this.phoneNumber
+    override fun readDestination(): String = this.phoneNumber
 }

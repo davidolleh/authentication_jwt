@@ -19,5 +19,5 @@ data class Email private constructor(
             if(userInput.length <= 200 && Regex(emailPattern).matches(userInput)) Email(userInput) else throw Exception()
     }
 
-    override fun destination(): String = this.email
+    override fun readDestination(): String = this.email
 }

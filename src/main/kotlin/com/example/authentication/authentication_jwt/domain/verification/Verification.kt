@@ -5,7 +5,7 @@ import java.sql.Timestamp
 import java.time.Instant
 
 data class Verification(
-    var destination: Contact,
+    var contact: Contact,
 
     var verificationCode: VerificationCode,
 
