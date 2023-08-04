@@ -5,27 +5,22 @@ import com.example.authentication.authentication_jwt.domain.user.Email
 import com.example.authentication.authentication_jwt.domain.user.PhoneNumber
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.io.UnsupportedEncodingException
-import java.util.Properties
-import javax.mail.Message
-import javax.mail.MessagingException
-import javax.mail.Session
-import javax.mail.Transport
-import javax.mail.internet.AddressException
-import javax.mail.internet.InternetAddress
-import javax.mail.internet.MimeMessage
+import javax.mail.*
+
+
+
 
 @Service
 class VerificationService @Autowired constructor(
-    val verificationRepository: VerificationRepository
-
+    val verificationRepository: VerificationRepository,
+    val emailService: EmailService
 ) {
     fun sendVerificationToDestination(contact: Contact) {
         val verificationCode: VerificationCode = this.createVerificationCode()
 
         val verification: Verification = this.createVerification(verificationCode=verificationCode, contact=contact)
 
-        when (verification.destination) {
+        when (verification.contact) {
             is PhoneNumber -> sendVerificationToSms(
                 verification=verification
             )
@@ -43,40 +38,23 @@ class VerificationService @Autowired constructor(
     private fun sendVerificationToEmail(
         verification: Verification
     ) {
-        val props: Properties = Properties()
-        val session: Session = Session.getDefaultInstance(props, null)
+        val message = emailService.setEmail(verification=verification)
 
-        try {
-            val msg =  MimeMessage(session)
-            msg.setFrom(InternetAddress("asherolleh@gmail.com","황승준 회원가입 인증번호 입니다"))
-            msg.addRecipient(Message.RecipientType.TO, InternetAddress(verification.destination.destination()))
-            msg.setSubject("Hello world!")
-            msg.setText(verification.verificationCode.verificationNumber)
-
-            Transport.send(msg)
-
-        } catch (e: AddressException) {
-            println(e.toString())
-        } catch (e: MessagingException) {
-            println(e.toString())
-
-        } catch (e: UnsupportedEncodingException) {
-            println(e.toString())
-        }
-
+        Transport.send(message)
     }
 
     private fun createVerificationCode(): VerificationCode {
         return VerificationCodeGenerator.createVerificationCode()
     }
 
-    fun verifyVerificationCode() {
+
+        fun verifyVerificationCode() {
 
 
     }
 
     private fun createVerification(verificationCode: VerificationCode, contact: Contact): Verification {
-        val verification: Verification = Verification(verificationCode=verificationCode, destination = contact)
+        val verification: Verification = Verification(verificationCode=verificationCode, contact = contact)
 
         verificationRepository.save(verification)
 
