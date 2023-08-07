@@ -50,6 +50,14 @@ dependencies {
 	// mail api package
 //	implementation("org.springframework.boot:spring-boot-starter-mail:3.1.2")
 	implementation("com.sun.mail:javax.mail:1.6.2")
+
+	//hibernate and hibernate jdsl package
+	implementation("com.linecorp.kotlin-jdsl:hibernate-kotlin-jdsl-jakarta:2.2.0.RELEASE")
+	implementation("org.hibernate:hibernate-core:6.1.7.Final")
+
+	//eclipselink kotlin jdsl and eclipselink package
+//	implementation("com.linecorp.kotlin-jdsl:eclipselink-kotlin-jdsl-jakarta:x.y.z")
+//	implementation("org.eclipse.persistence:org.eclipse.persistence.jpa:4.y.z")
 }
 
 tasks.withType<KotlinCompile> {
