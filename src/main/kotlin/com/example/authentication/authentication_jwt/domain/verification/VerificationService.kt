@@ -12,8 +12,8 @@ import javax.mail.*
 
 @Service
 class VerificationService @Autowired constructor(
-    val verificationRepository: VerificationRepository,
-    val emailService: EmailService
+    private val verificationRepository: VerificationRepository,
+    private val emailService: EmailService
 ) {
     fun sendVerificationToDestination(contact: Contact) {
         val verificationCode: VerificationCode = this.createVerificationCode()
@@ -48,12 +48,29 @@ class VerificationService @Autowired constructor(
     }
 
 
-        fun verifyVerificationCode() {
+    fun verifyVerificationCode(inputVerificationCode: VerificationCode, contact: Contact): Boolean {
+        val verification: Verification = verificationRepository.findByContact(contact = contact.readDestination())
+            ?: throw Exception("not founded")
 
 
+        if (verification.isExpired()) {
+            throw Exception("expired verification")
+        }
+
+
+        if (verification.verificationCode != inputVerificationCode) {
+            throw Exception("wrong verification code")
+        }
+
+        return true
     }
 
     private fun createVerification(verificationCode: VerificationCode, contact: Contact): Verification {
+        if (verificationRepository.findByContact(contact = contact.readDestination()) != null) {
+            verificationRepository.delete()
+        }
+
+
         val verification: Verification = Verification(verificationCode=verificationCode, contact = contact)
 
         verificationRepository.save(verification)
