@@ -9,7 +9,7 @@ data class Verification(
 
     var verificationCode: VerificationCode,
 
-    var expiration: Timestamp = Timestamp.from(Instant.now())
+    var expiration: Timestamp = Timestamp.from(Instant.now().plusSeconds(180))
 ) {
     fun isExpired() :Boolean = expiration.before(Timestamp.from(Instant.now()))
 }
