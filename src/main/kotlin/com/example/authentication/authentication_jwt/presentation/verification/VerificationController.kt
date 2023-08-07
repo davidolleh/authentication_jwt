@@ -3,6 +3,7 @@ package com.example.authentication.authentication_jwt.presentation.verification
 import com.example.authentication.authentication_jwt.domain.user.Contact
 import com.example.authentication.authentication_jwt.domain.user.Email
 import com.example.authentication.authentication_jwt.domain.user.PhoneNumber
+import com.example.authentication.authentication_jwt.domain.verification.VerificationCode
 import com.example.authentication.authentication_jwt.domain.verification.VerificationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PostMapping
@@ -29,5 +30,28 @@ class VerificationController @Autowired constructor(
         } catch (e: Exception) {
             false
         }
+    }
+
+
+    @PostMapping("/verification/verify")
+    fun verifyVerification(
+        @RequestBody requestBody: VerifyReqeustDto
+    ): Boolean {
+        val contact: Contact = if (requestBody.phoneNumber != null) {
+            PhoneNumber.validPhoneNumber(requestBody.phoneNumber)
+        } else {
+            Email.validEmail(requestBody.email!!)
+        }
+
+        return try {
+            verificationService.verifyVerificationCode(
+                contact = contact,
+                inputVerificationCode = VerificationCode(verificationNumber = requestBody.verificationCode)
+            )
+            true
+        } catch (e: Exception) {
+            false
+        }
+
     }
 }
