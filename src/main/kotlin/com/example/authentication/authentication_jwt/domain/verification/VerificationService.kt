@@ -62,12 +62,14 @@ class VerificationService @Autowired constructor(
             throw Exception("wrong verification code")
         }
 
+        verificationRepository.deleteByContact(contact = contact.readDestination())
+
         return true
     }
 
     private fun createVerification(verificationCode: VerificationCode, contact: Contact): Verification {
         if (verificationRepository.findByContact(contact = contact.readDestination()) != null) {
-            verificationRepository.delete()
+            verificationRepository.deleteByContact(contact = contact.readDestination())
         }
 
 
