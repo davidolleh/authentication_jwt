@@ -12,7 +12,7 @@ abstract class VerificationCodeGenerator {
                 digits.add(secureRandom.nextInt(10))
             }
 
-            return VerificationCode(digits.toString())
+            return VerificationCode(digits.joinToString(""))
         }
     }
 }

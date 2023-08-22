@@ -18,7 +18,7 @@ class VerificationController @Autowired constructor(
     fun sendVerification(
         @RequestBody requestBody: VerificationRequestDto
     ) : Boolean {
-        var contact: Contact = if (requestBody.phoneNumber != null) {
+        val contact: Contact = if (requestBody.phoneNumber != null) {
             PhoneNumber.validPhoneNumber(requestBody.phoneNumber)
         } else {
             Email.validEmail(requestBody.email!!)
@@ -50,6 +50,7 @@ class VerificationController @Autowired constructor(
             )
             true
         } catch (e: Exception) {
+            println(e.message)
             false
         }
 
