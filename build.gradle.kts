@@ -48,8 +48,9 @@ dependencies {
 	//uuid 생성 package
 	implementation("com.github.f4b6a3:ulid-creator:5.2.0")
 	// mail api package
-//	implementation("org.springframework.boot:spring-boot-starter-mail:3.1.2")
 	implementation("com.sun.mail:javax.mail:1.6.2")
+	// sms message api package
+	implementation("net.nurigo:sdk:4.3.0")
 
 	//hibernate and hibernate jdsl package
 	implementation("com.linecorp.kotlin-jdsl:hibernate-kotlin-jdsl-jakarta:2.2.0.RELEASE")

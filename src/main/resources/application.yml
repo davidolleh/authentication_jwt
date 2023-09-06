@@ -11,6 +11,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+#      ddl-auto: create
   mail:
     host: ${EMAIL_HOST}
     port: ${EMAIL_PORT}
@@ -31,3 +32,8 @@ spring:
             required: true
       verify:
         host: ${VERIFY_EMAIL_HOST}
+  sms:
+    key: ${SMS_API_KEY}
+    secret-key: ${SMS_API_SECRET_KEY}
+    url: ${SMS_URL}
+    username: ${SMS_ID}

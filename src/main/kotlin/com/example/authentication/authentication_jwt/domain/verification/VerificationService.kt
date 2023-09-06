@@ -13,7 +13,8 @@ import javax.mail.*
 @Service
 class VerificationService @Autowired constructor(
     private val verificationRepository: VerificationRepository,
-    private val emailService: EmailService
+    private val emailService: EmailService,
+    private val messengerService: MessengerService
 ) {
     fun sendVerificationToDestination(contact: Contact) {
         val verificationCode: VerificationCode = this.createVerificationCode()
@@ -33,14 +34,17 @@ class VerificationService @Autowired constructor(
     private fun sendVerificationToSms(
         verification: Verification
     ) {
+        val vMessage = messengerService.sendMessage(verification=verification)
+
+
     }
 
     private fun sendVerificationToEmail(
         verification: Verification
     ) {
-        val message = emailService.setEmail(verification=verification)
+        val vMail = emailService.setEmail(verification=verification)
 
-        Transport.send(message)
+        Transport.send(vMail)
     }
 
     private fun createVerificationCode(): VerificationCode {
