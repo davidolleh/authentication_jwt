@@ -53,6 +53,5 @@ class VerificationController @Autowired constructor(
             println(e.message)
             false
         }
-
     }
 }
