@@ -35,8 +35,6 @@ class VerificationService @Autowired constructor(
         verification: Verification
     ) {
         val vMessage = messengerService.sendMessage(verification=verification)
-
-
     }
 
     private fun sendVerificationToEmail(
