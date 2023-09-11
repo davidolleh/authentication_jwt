@@ -36,9 +36,10 @@ class VerificationRepositoryImpl @Autowired constructor(
         try {
             val deleteQuery: Query = queryFactory.deleteQuery<VerificationEntity> {
                 where(
-                    col(VerificationEntity::contact).equal(contact)
+                    col(VerificationEntity::contact).like(contact)
                 )
             }
+            deleteQuery.executeUpdate()
 
             return true
         } catch (e: Exception) {
