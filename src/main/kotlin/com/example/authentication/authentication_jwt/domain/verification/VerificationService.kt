@@ -4,6 +4,7 @@ import com.example.authentication.authentication_jwt.config.exception.EntityNotF
 import com.example.authentication.authentication_jwt.domain.user.Contact
 import com.example.authentication.authentication_jwt.domain.user.Email
 import com.example.authentication.authentication_jwt.domain.user.PhoneNumber
+import com.example.authentication.authentication_jwt.domain.verification.exception.VerificationExpiredException
 import com.example.authentication.authentication_jwt.domain.verification.exception.VerificationInvalidException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -57,11 +58,11 @@ class VerificationService @Autowired constructor(
             ?: throw EntityNotFoundException()
 
 
-//        if (verification.isExpired()) {
-//            throw Exception("expired verification")
-//        }
+        if (verification.isExpired()) {
+            verificationRepository.deleteByContact(contact = contact.readDestination())
+            throw VerificationExpiredException()
+        }
 
-        verification.isExpired()
 
 
         if (verification.verificationCode != inputVerificationCode) {

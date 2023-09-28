@@ -13,8 +13,5 @@ data class Verification(
     var expiration: Timestamp = Timestamp.from(Instant.now().plusSeconds(180))
 ) {
     fun isExpired() :Boolean =
-        if (expiration.before(Timestamp.from(Instant.now())))
-            true
-        else
-            throw VerificationExpiredException()
+        !expiration.after(Timestamp.from(Instant.now()))
 }
