@@ -1,8 +1,10 @@
 package com.example.authentication.authentication_jwt.domain.verification
 
+import com.example.authentication.authentication_jwt.config.exception.EntityNotFoundException
 import com.example.authentication.authentication_jwt.domain.user.Contact
 import com.example.authentication.authentication_jwt.domain.user.Email
 import com.example.authentication.authentication_jwt.domain.user.PhoneNumber
+import com.example.authentication.authentication_jwt.domain.verification.exception.VerificationInvalidException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import javax.mail.*
@@ -52,16 +54,19 @@ class VerificationService @Autowired constructor(
 
     fun verifyVerificationCode(inputVerificationCode: VerificationCode, contact: Contact): Boolean {
         val verification: Verification = verificationRepository.findByContact(contact = contact.readDestination())
-            ?: throw Exception("not founded")
+            ?: throw EntityNotFoundException()
 
 
-        if (verification.isExpired()) {
-            throw Exception("expired verification")
-        }
+//        if (verification.isExpired()) {
+//            throw Exception("expired verification")
+//        }
+
+        verification.isExpired()
 
 
         if (verification.verificationCode != inputVerificationCode) {
-            throw Exception("wrong verification code")
+            // 인증 번호 재전송 하라 하거나 새 인증번호 다시 입력
+            throw VerificationInvalidException()
         }
 
         verificationRepository.deleteByContact(contact = contact.readDestination())
