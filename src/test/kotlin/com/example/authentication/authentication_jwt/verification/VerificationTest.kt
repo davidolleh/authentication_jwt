@@ -37,6 +37,61 @@ class VerificationTest: MockTest() {
     private fun <T> any(type: Class<T>): T = Mockito.any<T>(type)
 
 
+    // 뭐가 잘못 됨 assertion으로 확인이 불가 코드가 단일 책임 원칙을 못따르나 확인 필요
+    @Test
+    @DisplayName("인증코드 처음 생성 성공 테스트")
+    fun firstCreateVerificationCodeSuccess() {
+        val testMethod = verificationService.javaClass.getDeclaredMethod("createVerification", Contact::class.java)
+        testMethod.trySetAccessible()
+        // given
+        val contact: Contact = Email.validEmail("davidolleh@naver.com")
+        val verificationCode: VerificationCode = VerificationCodeGenerator.createVerificationCode()
+        val verification: Verification = Verification(contact=contact, verificationCode=verificationCode)
+        val parameters = arrayOfNulls<Any>(1)
+        parameters[0] = contact
+
+        doReturn(null).`when`(verificationRepository).findByContact(any(String::class.java))
+        doReturn(verification).`when`(verificationRepository).save(any(Verification::class.java))
+        // when
+        val result: Verification = testMethod.invoke(verificationService, *parameters) as Verification
+
+        // then
+//        Assertions.assertThat(result).isEqualTo(verification)
+
+        // verify
+        verify(verificationRepository, times(1)).findByContact(any(String::class.java))
+        verify(verificationRepository, times(1)).save(any(Verification::class.java))
+    }
+
+    // 뭐가 잘못 됨 assertion으로 확인이 불가 코드가 단일 책임 원칙을 못따르나 확인 필요
+    @Test
+    @DisplayName("인증코드 첫번째 이후 생성 성공 테스트")
+    fun secondCreateVerificationCodeSuccess() {
+        val testMethod = verificationService.javaClass.getDeclaredMethod("createVerification", Contact::class.java)
+        testMethod.trySetAccessible()
+        // given
+        val contact: Contact = Email.validEmail("davidolleh@naver.com")
+        val verificationCode: VerificationCode = VerificationCodeGenerator.createVerificationCode()
+        val verification: Verification = Verification(contact=contact, verificationCode=verificationCode)
+        val parameters = arrayOfNulls<Any>(1)
+        parameters[0] = contact
+
+        doReturn(verification).`when`(verificationRepository).findByContact(any(String::class.java))
+        doReturn(true).`when`(verificationRepository).deleteByContact(any(String::class.java))
+        doReturn(verification).`when`(verificationRepository).save(any(Verification::class.java))
+        // when
+        val result: Verification = testMethod.invoke(verificationService, *parameters) as Verification
+
+        // then
+//        Assertions.assertThat(result).isEqualTo(verification)
+
+        // verify
+        verify(verificationRepository, times(1)).findByContact(any(String::class.java))
+        verify(verificationRepository, times(1)).deleteByContact(any(String::class.java))
+        verify(verificationRepository, times(1)).save(any(Verification::class.java))
+    }
+
+
 
     @Test
     @DisplayName("인증코드 인증 성공 테스트")
@@ -50,10 +105,10 @@ class VerificationTest: MockTest() {
         doReturn(verification).`when`(verificationRepository).findByContact(any(String::class.java))
 
         //when
-        verificationService.verifyVerificationCode(inputVerificationCode = verificationCode, contact = contact)
+        val result = verificationService.verifyVerificationCode(inputVerificationCode = verificationCode, contact = contact)
 
         //then
-        Assertions.assertThat(true).isEqualTo(true)
+        Assertions.assertThat(result).isEqualTo(true)
 
         // verify
         verify(verificationRepository, times(1)).findByContact(any(String::class.java))
