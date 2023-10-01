@@ -63,7 +63,7 @@ class EmailService  @Autowired constructor(
         }
     }
 
-    fun setEmail(verification: Verification): MimeMessage {
+    private fun setEmail(verification: Verification): MimeMessage {
 
         try {
             val message: MimeMessage = MimeMessage(session)
@@ -90,6 +90,13 @@ class EmailService  @Autowired constructor(
         } catch (e: Exception) {
             throw Exception()
         }
+    }
 
+    fun sendEmail(verification: Verification) : MimeMessage {
+        val vMail = this.setEmail(verification = verification)
+
+        Transport.send(vMail)
+
+        return vMail
     }
 }

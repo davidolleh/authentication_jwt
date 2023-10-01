@@ -8,7 +8,6 @@ import com.example.authentication.authentication_jwt.domain.verification.excepti
 import com.example.authentication.authentication_jwt.domain.verification.exception.VerificationInvalidException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import javax.mail.*
 
 
 
@@ -20,9 +19,7 @@ class VerificationService @Autowired constructor(
     private val messengerService: MessengerService
 ) {
     fun sendVerificationToDestination(contact: Contact) {
-        val verificationCode: VerificationCode = this.createVerificationCode()
-
-        val verification: Verification = this.createVerification(verificationCode=verificationCode, contact=contact)
+        val verification: Verification = this.createVerification(contact=contact)
 
         when (verification.contact) {
             is PhoneNumber -> sendVerificationToSms(
@@ -43,9 +40,7 @@ class VerificationService @Autowired constructor(
     private fun sendVerificationToEmail(
         verification: Verification
     ) {
-        val vMail = emailService.setEmail(verification=verification)
-
-        Transport.send(vMail)
+        val vMail = emailService.sendEmail(verification=verification)
     }
 
     private fun createVerificationCode(): VerificationCode {
@@ -75,12 +70,12 @@ class VerificationService @Autowired constructor(
         return true
     }
 
-    private fun createVerification(verificationCode: VerificationCode, contact: Contact): Verification {
+    private fun createVerification(contact: Contact): Verification {
         if (verificationRepository.findByContact(contact = contact.readDestination()) != null) {
             verificationRepository.deleteByContact(contact = contact.readDestination())
         }
 
-
+        val verificationCode: VerificationCode = this.createVerificationCode()
         val verification: Verification = Verification(verificationCode=verificationCode, contact = contact)
 
         verificationRepository.save(verification)
