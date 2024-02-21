@@ -7,7 +7,6 @@ import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import java.net.BindException
 
 @ControllerAdvice
@@ -31,13 +30,13 @@ class GlobalExceptionHandler {
     }
 
     // enum type 일치 하지 않아 binding 못할 경우 발생
-    @ExceptionHandler(MethodArgumentTypeMismatchException::class)
-    fun handleMethodArgumentTypeMismatchException(e: MethodArgumentTypeMismatchException): ResponseEntity<ErrorResponseBody> {
-        val response: ErrorResponseBody = ErrorResponseBody(
-            errorCode = ErrorCode.INVALID_TYPE_VALUE
-        );
-        return ResponseEntity<ErrorResponseBody>(response, HttpStatus.BAD_REQUEST)
-    }
+//    @ExceptionHandler(MethodArgumentTypeMismatchException::class)
+//    fun handleMethodArgumentTypeMismatchException(e: MethodArgumentTypeMismatchException): ResponseEntity<ErrorResponseBody> {
+//        val response: ErrorResponseBody = ErrorResponseBody(
+//            errorCode = ErrorCode.INVALID_TYPE_VALUE
+//        );
+//        return ResponseEntity<ErrorResponseBody>(response, HttpStatus.BAD_REQUEST)
+//    }
 
     // 지원하지 않은 HTTP method 호출 할 경우
     @ExceptionHandler(HttpRequestMethodNotSupportedException::class)

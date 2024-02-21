@@ -1,5 +1,6 @@
 package com.example.authentication.authentication_jwt.domain.user
 
+import com.example.authentication.authentication_jwt.config.exception.InvalidValueException
 import jakarta.persistence.Embeddable
 
 
@@ -16,7 +17,9 @@ data class Email private constructor(
         private const val emailPattern = "^${localPattern}@${domainPattern}$"
 
         fun validEmail(userInput: String): Email =
-            if(userInput.length <= 200 && Regex(emailPattern).matches(userInput)) Email(userInput) else throw Exception()
+            if(userInput.length <= 200 && Regex(emailPattern).matches(userInput))
+                Email(userInput)
+            else throw InvalidValueException()
     }
 
     override fun readDestination(): String = this.email
